@@ -49,7 +49,7 @@ def integrate_kernel(pos, vel, force, dt, N, dim):
         for d in range(dim):
             force[i, d] = 0.0
 
-# --- <MODIFIED> Kernel de Colisiones (Bounding Box) ---
+# --- Kernel de Colisiones (Contorno) ---
 @cuda.jit
 def check_boundaries_kernel(pos, vel, N, damping, bound_max):
     """
@@ -66,17 +66,17 @@ def check_boundaries_kernel(pos, vel, N, damping, bound_max):
         # Iteramos sobre las 3 dimensiones (d=0 es X, d=1 es Y, d=2 es Z)
         for d in range(3): 
             
-            # 1. Colisión con el límite inferior (0.0)
+            # Colisión con el límite inferior (0.0)
             if pos[i, d] < bound_min:
                 pos[i, d] = bound_min
                 vel[i, d] = -vel[i, d] * damping
             
-            # 2. Colisión con el límite superior (bound_max)
+            # Colisión con el límite superior(bound_max)
             elif pos[i, d] > bound_max:
                 pos[i, d] = bound_max
                 vel[i, d] = -vel[i, d] * damping
 
-# --- <NEW> Funciones SPH (Device Functions) ---
+# --- Funciones SPH (Device Functions)---
 @cuda.jit(device=True)
 def poly6_W(r_sq, H, H_sq):
     if r_sq >= H_sq:
@@ -103,7 +103,7 @@ def viscosity_lap_W(r_len, H):
         return 0.0
     return VISC_COEFF * (H - r_len)
 
-# --- <NEW> Kernels Principales de SPH ---
+# --- Kernels Principales de SPH ---
 @cuda.jit
 def compute_density_pressure_kernel(pos, density, pressure, N, H, H_sq, MASS, REST_DENSITY, GAS_CONST):
     start = cuda.grid(1)
@@ -127,8 +127,8 @@ def compute_forces_kernel(pos, vel, force, density, pressure, N, H, H_sq, MASS, 
     start = cuda.grid(1)
     stride = cuda.gridsize(1)
 
-    grad_vec = cuda.local.array(3, dtype=np.float32) # Corregido a np.float32
-    vel_diff = cuda.local.array(3, dtype=np.float32) # Corregido a np.float32
+    grad_vec = cuda.local.array(3, dtype=np.float32) 
+    vel_diff = cuda.local.array(3, dtype=np.float32) 
 
     for i in range(start, N, stride):
         for j in range(N):
@@ -227,9 +227,7 @@ print("Partículas inicializadas en la GPU.")
 # ===============================================
 
 print(f"Iniciando simulación de {FRAMES} pasos...")
-print("ADVERTENCIA: Usando O(N^2), esto puede ser muy lento.")
 
-# ... (código de directorio y listas) ...
 os.makedirs("results", exist_ok=True)
 output_filename = "results/simulation_data.npz"
 all_positions_list = []
@@ -270,7 +268,7 @@ for frame_idx in range(1, FRAMES):
 
     cuda.synchronize()
 
-    # --- B. Copiar datos para Visualización (GPU -> CPU) ---
+    # --- B. Copiar datos para Graficar (GPU -> CPU) ---
     pos_np = d_pos.get()
     all_positions_list.append(pos_np)
 

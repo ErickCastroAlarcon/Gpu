@@ -53,7 +53,7 @@ def integrate_kernel(pos, vel, force, dt, N, dim):
 @cuda.jit
 def check_boundaries_kernel(pos, vel, N, damping, bound_max):
     """
-    Revisa colisiones con una caja delimitadora (Bounding Box).
+    Revisa colisiones con una caja.
     Límites de la caja: [0.0, bound_max] en los 3 ejes.
     """
     start = cuda.grid(1)

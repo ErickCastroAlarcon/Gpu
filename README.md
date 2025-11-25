@@ -18,43 +18,16 @@ Este proyecto simula El comportamiento de un fluido incompresible.
 [Image of an SPH simulation GIF]
 > *Una breve descripción de la simulación. Ej: "Simulación 2D de una 'presa rota' (dam break) con 50,000 partículas."*
 
-(Reemplaza la línea de arriba con un GIF o una imagen de tu simulación. Puedes subir la imagen a tu repositorio de GitHub y enlazarla).
+## Resultados
 
-## 🛠️ Requisitos e Instalación
 
-Asegúrate de tener un hardware compatible con CUDA y los drivers de NVIDIA actualizados.
+## 🛠️ Requisitos
 
-### 1. Dependencias Clave
+Tener un hardware compatible con CUDA y los drivers de NVIDIA actualizados.
+
+### Dependencias Clave
 
 * Python (3.9+)
 * `cupy` (para la aceleración GPU)
 * `numpy` (para manejo de arrays)
-* `matplotlib` (para visualización, si aplica)
-* [**Cualquier otra biblioteca, ej: `scipy`, `tqdm`**]
-
-### 2. Instalación
-
-1.  Clona este repositorio:
-    ```bash
-    git clone [https://github.com/TU_USUARIO/TU_REPOSITORIO.git](https://github.com/TU_USUARIO/TU_REPOSITORIO.git)
-    cd TU_REPOSITORIO
-    ```
-
-2.  (Recomendado) Crea y activa un entorno virtual:
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # En Windows: venv\Scripts\activate
-    ```
-
-3.  Instala las dependencias:
-    ```bash
-    pip install -r requirements.txt
-    ```
-    *(Asegúrate de tener un archivo `requirements.txt` con las bibliotecas listadas arriba)*.
-
-## ⚡ Cómo Usar el Simulador
-
-Para ejecutar una simulación predeterminada, simplemente corre:
-
-```bash
-python main.py --config configs/mi_simulacion.json
+* `vispy` (para visualización)

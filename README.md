@@ -9,14 +9,12 @@ Este proyecto simula El comportamiento de un fluido incompresible.
 ## 🌟 Características Principales
 
 * **Aceleración por GPU:** Utiliza [**CuPy/CUDA**] para paralelizar los cálculos de SPH (búsqueda de vecinos, cálculo de densidad, fuerzas) logrando un rendimiento significativamente superior al de una CPU.
-* **Implementación en Python:** Código limpio y legible que aprovecha el ecosistema científico de Python (NumPy, SciPy).
+* **Implementación en Python:** Código limpio y legible que aprovecha el ecosistema científico de Python (NumPy, Numba).
 * **Soporte 2D/3D:** Capaz de ejecutar simulaciones tanto en 2 como en 3 dimensiones.
-* **Visualización (Opcional):** Incluye scripts para animar la simulacion usando matplotlib
+* **Visualización:** Incluye scripts para animar la simulacion usando vispy
 
 ## 🌠 Visualización de Ejemplo
 
-[Image of an SPH simulation GIF]
-> *Una breve descripción de la simulación. Ej: "Simulación 2D de una 'presa rota' (dam break) con 50,000 partículas."*
 
 ## Resultados
 https://drive.google.com/drive/folders/1DwhmC2sk5G8yHT5xN7Agd_rZS4IxSIeH?usp=drive_link
@@ -31,3 +29,4 @@ Tener un hardware compatible con CUDA y los drivers de NVIDIA actualizados.
 * `cupy` (para la aceleración GPU)
 * `numpy` (para manejo de arrays)
 * `vispy` (para visualización)
+* numba (para eficiencia)

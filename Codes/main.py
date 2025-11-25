@@ -261,9 +261,9 @@ for frame_idx in range(1, FRAMES):
         d_pos, d_vel, d_force, dt, N, dim
     )
     
-    # 5. Revisar colisiones (¡Llamada actualizada!)
+    # 5. Revisar colisiones
     check_boundaries_kernel[blocks_per_grid, threads_per_block](
-        d_pos, d_vel, N, damping, BOUND_BOX_SIZE # <--- CAMBIO AQUÍ
+        d_pos, d_vel, N, damping, BOUND_BOX_SIZE 
     )
 
     cuda.synchronize()

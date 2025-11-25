@@ -17,7 +17,7 @@ Una implementación de **Hidrodinámica de Partículas Suavizadas (SPH)** aceler
 
 
 
-**Simulación de 80000 particulas SPH**
+**Simulación de 80000 particulas SPH (main.py)**
 
 ## Resultados
 https://drive.google.com/drive/folders/1DwhmC2sk5G8yHT5xN7Agd_rZS4IxSIeH?usp=drive_link

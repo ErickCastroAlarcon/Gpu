@@ -13,7 +13,7 @@ Una implementación de **Hidrodinámica de Partículas Suavizadas (SPH)** aceler
 * **Visualización:** Incluye scripts para animar la simulacion usando vispy
 
 ## 🌠 Visualización de Ejemplo
-<img src="https://github.com/user-attachments/assets/3c3c6605-06b6-406c-9b08-acba8240c5e1" scale=0.3/>
+<img src="https://github.com/user-attachments/assets/3c3c6605-06b6-406c-9b08-acba8240c5e1" width="300" />
 
 
 

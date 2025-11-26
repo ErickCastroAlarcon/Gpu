@@ -198,6 +198,7 @@ print(f"Total de partículas N = {N}, dim = {dim}")
 print(f"Grilla calculada de {n_per_dim}^({dim})")
 
 # --- Reservar memoria en GPU (CuPy) ---
+# Variables d_ pertenecen al device
 d_pos = cp.empty((N, dim), dtype=cp.float32)
 d_vel = cp.empty((N, dim), dtype=cp.float32)
 d_force = cp.empty((N, dim), dtype=cp.float32)

@@ -172,19 +172,19 @@ def compute_forces_kernel(pos, vel, force, density, pressure, N, H, H_sq, MASS, 
 # --- Parámetros de Partículas ---
 N = 100000       
 dim = 3        
-epsilon = 0.1  
+epsilon = 0.02  
 
 # --- Parámetros de Simulación ---
 dt = 0.005      
 FRAMES = 200     
 damping = 0.8    
-BOUND_BOX_SIZE = 5.0 
+BOUND_BOX_SIZE = 4.0 
 
 # --- Parámetros de SPH (Fluido) ---
-H = 0.1             
+H = 0.6              
 MASS = 100          
 REST_DENSITY = 1000.0 
-GAS_CONST = 10.0
+GAS_CONST = 1000.0
 VISCOSITY = 0.5    
 
 # --- Constantes pre-calculadas para los kernels SPH ---

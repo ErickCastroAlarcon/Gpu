@@ -376,7 +376,7 @@ for frame_idx in range(FRAMES):
     cuda.synchronize()
 
     # Guardar frames
-    if frame_idx % 2 == 0: # Guardar cada 2 frames
+    if frame_idx % 2 == 0: # Guardar cada 2 frames reduce cuello de botella en la transferencia de datos
         all_positions_list.append(d_pos.get())
     
     if frame_idx % 50 == 0:

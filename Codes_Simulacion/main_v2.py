@@ -7,7 +7,7 @@ import os
 import time
 
 # IMPORTAMOS NUESTROS KERNELS
-import kernels as k  # Asumimos que el archivo anterior se llama kernels.py
+import kernels as k  
 
 def run_simulation():
     # --- PARÁMETROS ---
@@ -22,7 +22,7 @@ def run_simulation():
     # SPH Params
     H = 0.06
     REST_DENSITY = 1000.0
-    MASS = 1000.0
+    MASS = REST_DENSITY * (epsilon ** 3)   # Masa calculada automaticamente 
     GAS_CONST = 100.0
     VISCOSITY = 0.3
 

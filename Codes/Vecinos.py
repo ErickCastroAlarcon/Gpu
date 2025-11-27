@@ -249,18 +249,18 @@ def compute_forces_grid(pos, vel, force, density, pressure, cell_start, cell_end
 
 N = 200000       
 dim = 3        
-epsilon = 0.08  # Espaciado entre particulas
+epsilon = 0.02  # Espaciado entre particulas
 
 dt = 0.0002  
-FRAMES = 400     
+FRAMES = 500     
 damping = 0.5    
 BOUND_BOX_SIZE = 6.0 
 
 # SPH Params
-H = 0.007
+H = 0.04
 REST_DENSITY = 1000.0             
-MASS = 1000.0   # Masa calculada automaticamente 
-GAS_CONST = 100.0    # Constante de gas más rígida
+MASS = 0.1    
+GAS_CONST = 1000.0    # Constante de gas más rígida
 VISCOSITY = 0.3      
 
 # Coeficientes (calculados en CPU, pasados como args al kernel)

@@ -5,9 +5,7 @@ import math
 import os
 import time  # Para medir el tiempo de la simulación
 
-# ===============================================
-# --- 1. KERNELS DE SIMULACIÓN EN CUDA ---
-# ===============================================
+# Kernels en Cuda
 
 @cuda.jit
 def initialize_particles_kernel(pos, vel, force, pressure, density, N, dim, epsilon, n_per_dim):
@@ -165,9 +163,7 @@ def compute_forces_kernel(pos, vel, force, density, pressure, N, H, H_sq, MASS, 
             force[i, 1] += vel_diff[1] * scale
             force[i, 2] += vel_diff[2] * scale
 
-# ===============================================
-# --- 2. CONFIGURACIÓN DE LA SIMULACIÓN ---
-# ===============================================
+# Configuracion de la Simulacion
 
 # --- Parámetros de Partículas ---
 N = 100000       
@@ -223,9 +219,7 @@ initialize_particles_kernel[blocks_per_grid, threads_per_block](
 cuda.synchronize()
 print("Partículas inicializadas en la GPU.")
 
-# ===============================================
-# --- 4. BUCLE DE SIMULACIÓN Y CAPTURA ---
-# ===============================================
+# Bucle
 
 print(f"Iniciando simulación de {FRAMES} pasos...")
 
@@ -279,9 +273,8 @@ for frame_idx in range(1, FRAMES):
 end_time = time.time()
 print(f"Simulación (solo cómputo) completada en {end_time - start_time:.4f} segundos.")
 
-# ===============================================
-# --- 5. GUARDAR DATOS EN ARCHIVO ---
-# ===============================================
+# Guardar Datos 
+
 print("Guardando datos en archivo...")
 
 final_data_array = np.array(all_positions_list, dtype=np.float32)

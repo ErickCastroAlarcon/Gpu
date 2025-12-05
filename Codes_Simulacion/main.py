@@ -297,21 +297,21 @@ def apply_wave_generator_kernel(pos, force, current_time, N):
 # --- 3. SETUP Y PARÁMETROS ---
 # ===============================================
 
-N = 300000       
+N = 100000       
 dim = 3        
 epsilon = 0.02  # Espaciado entre particulas
 
-dt = 0.004 
-FRAMES = 2000     
+dt = 0.002 
+FRAMES = 1000     
 damping = 0.1    
-BOUND_BOX_SIZE = 4.0 
+BOUND_BOX_SIZE = 2.0 
 
 # SPH Params
-H = 0.6
+H = 0.08
 REST_DENSITY = 1000.0             
 MASS = REST_DENSITY * (epsilon ** 3)   # Masa calculada automaticamente 
-GAS_CONST = 5000.0    # Constante de gas más rígida
-VISCOSITY = 0.5      
+GAS_CONST = 1000.0    # Constante de gas más rígida
+VISCOSITY = 1.0      
 
 # Coeficientes (calculados en CPU, pasados como args al kernel)
 POLY6_COEFF = 315.0 / (64.0 * math.pi * H**9)

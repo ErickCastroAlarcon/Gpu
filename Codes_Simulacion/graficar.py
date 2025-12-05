@@ -3,77 +3,68 @@ import pyvista as pv
 
 # --- CONFIG ---
 npz_path = "results/sph_grid_opt.npz"
-output_video = "results/simulation_animation_4k.mp4"
+output_video = "results/sim_animation.mp4"
 frame_step = 1
-fps = 60  # 60 fps para fluidez máxima
+fps = 30
 
 # --- LOAD ---
+print("Cargando datos...")
 data = np.load(npz_path)
-positions = data["positions"][::frame_step]
+positions = data["positions"]  # shape (frames, N, 3)
+# Aplicar frame step inmediatamente para ahorrar memoria/tiempo
+positions = positions[::frame_step]
 num_frames, N, dim = positions.shape
+print(f"Datos cargados: {num_frames} frames, {N} partículas.")
 
-# --- SETUP PLOTTER (CALIDAD ULTRA) ---
-# window_size=(3840, 2160) es 4K real.
-# multi_samples=8 activa el Anti-aliasing por hardware (MSAA) al máximo.
-plotter = pv.Plotter(off_screen=True, window_size=(3840, 2160), multi_samples=8)
-
-# Activar "Super Sampling" (renderiza aún más grande y reduce, elimina bordes pixelados)
-plotter.enable_anti_aliasing("ssaa")
-
-# Activar "Eye Dome Lighting". 
-# Esto da volumen y sombras a los puntos. Sin esto se ven planos.
-plotter.enable_eye_dome_lighting()  
-
-# Opcional: Si prefieres sombras realistas tradicionales (puede ser más lento/oscuro)
-# plotter.enable_ssao(radius=2, bias=0.5) # Screen Space Ambient Occlusion
-
-# --- OBJETOS ---
+# --- SETUP ESCENA (GPU) ---
+# PyVista usa 'PolyData' para nubes de puntos
 point_cloud = pv.PolyData(positions[0])
 
-# specular=1.0 hace que las esferas brillen (reflejen luz), dando sensación 3D metálica/plástica
-# ambient=0.3 asegura que las partes en sombra no sean negras totales
-plotter.add_mesh(point_cloud, 
-                 scalars=positions[0, :, 2], 
-                 cmap="viridis",
-                 point_size=10,             # Un poco más grandes para 4K
-                 render_points_as_spheres=True,
-                 specular=1.0,              # Brillo especular
-                 specular_power=50,         # Qué tan concentrado es el brillo
-                 ambient=0.3)               # Luz ambiental
+# Creamos el plotter (la ventana de renderizado)
+# off_screen=True es importante para generar video sin abrir ventana
+plotter = pv.Plotter(off_screen=True, window_size=(1920, 1080)) 
 
-# --- CAMARA Y FONDO ---
-bounds = [-3, 6, 0, 6, -4, 4]
+# Añadimos los puntos. 
+# render_points_as_spheres hace que se vea mucho mejor y más rápido
+plotter.add_mesh(point_cloud, color="c", point_size=4, render_points_as_spheres=True)
+
+# --- FIJAR LA CÁMARA Y LÍMITES ---
+# En Matplotlib definiste límites fijos (-3 a 6, etc). 
+# En PyVista, dibujamos una caja invisible (wireframe) para fijar la escala de la cámara
+bounds = [-1, 1, -1, 1, -1, 1] # [xmin, xmax, ymin, ymax, zmin, zmax]
 box = pv.Box(bounds)
-plotter.add_mesh(box, style='wireframe', opacity=0.1, color='black', line_width=2) # line_width 2 para que se vea en 4K
+plotter.add_mesh(box, style='wireframe', opacity=0.05, color='black')
 
-plotter.set_background("white") 
-# Opcional: Un fondo gradiente suele verse más "pro" que blanco puro
-# plotter.set_background("black", top="royablue") 
+plotter.set_background("white")
+plotter.show_axes()
 
+# 1. Definimos qué dirección es "arriba" (0,0,1 significa Z positivo)
 plotter.camera.up = (0, 0, 1)
-plotter.camera.focal_point = (1.5, 3, 0)
-plotter.camera.position = (15, -5, 10)
 
-# --- ANIMACIÓN ---
-print(f"Renderizando 4K a {fps} FPS con Anti-aliasing y EDL...")
+# 2. Hacia dónde mira la cámara (el centro aproximado de tus datos para que no se pierdan)
+# Tus datos van aprox de X[-3,6], Y[0,6], Z[-4,4]. El centro es aprox (1.5, 3, 0)
+plotter.camera.focal_point = (1.5, 3, 1)
 
-# quality=10 es el máximo en imageio para MP4
-plotter.open_movie(output_video, framerate=fps, quality=10)
+# 3. Dónde está la cámara. 
+# La ponemos lejos en X e Y, y un poco elevada en Z para ver en perspectiva.
+plotter.camera.position = (1, 1, 2)
 
+plotter.camera_position = 'xy' # O ajusta manualmente la vista inicial
+plotter.camera.azimuth = 45    # Un poco de ángulo para ver 3D
+plotter.camera.elevation = 30
+
+plotter.open_movie(output_video, framerate=fps, quality=9)
+
+# Barra de progreso simple
 for i in range(num_frames):
-    current_pos = positions[i]
-    point_cloud.points = current_pos
-    
-    # Actualizar color scalar
-    # Nota: Si cmap="viridis", a veces hay que indicar el rango si cambia mucho
-    # point_cloud.point_data["Scalars"] = current_pos[:, 2] 
-    # Para evitar errores si el nombre interno varía, usamos:
-    point_cloud.active_scalars[:] = current_pos[:, 2]
+    # Aquí está la magia: NO borramos y recreamos.
+    # Solo actualizamos las coordenadas de los puntos existentes en memoria.
+    point_cloud.points = positions[i]
+   # point_cloud.active_scalars = positions[:, 2]
+    plotter.write_frame()  # Renderiza el frame actual al video
 
-    plotter.write_frame()
-    
-    if i % 25 == 0:
-        print(f"Frame {i}/{num_frames}")
+    if i % 50 == 0:
+        print(f"Procesando frame {i}/{num_frames}")
 
 plotter.close()
-print("¡Renderizado Ultra finalizado!")
+print("¡Renderizado Listo!")
